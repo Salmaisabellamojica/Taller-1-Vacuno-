@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_pantalla"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_width="0dp"
+        android:layout_height="116dp"
+        android:background="@drawable/bg_header"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="22dp"
+        android:paddingEnd="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_logo_vacuno"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:background="@drawable/bg_icono_claro"
+            android:gravity="center"
+            android:text="V"
+            android:textColor="@color/verde_principal"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/ll_titulo_app"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VACUNO"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_subtitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gestion ganadera inteligente"
+                android:textColor="@color/blanco_suave"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_notificaciones"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_icono_header"
+            android:gravity="center"
+            android:text="!"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_avatar"
+            android:contentDescription="Avatar de administrador"
+            android:padding="10dp"
+            android:src="@drawable/ic_avatar_vacuno" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_panel_admin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/ll_menu_inferior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_header">
+
+        <LinearLayout
+            android:id="@+id/ll_contenido_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="22dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_bienvenida"
+                android:layout_width="match_parent"
+                android:layout_height="126dp"
+                android:background="@drawable/bg_bienvenida"
+                android:paddingStart="18dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="14dp">
+
+                <TextView
+                    android:id="@+id/tv_saludo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/tv_ubicacion"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_descripcion_bienvenida"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Bienvenido al panel de control de tu finca"
+                    android:textColor="@color/texto_secundario"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_saludo" />
+
+                <TextView
+                    android:id="@+id/tv_ubicacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_chip"
+                    android:gravity="center"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="@color/verde_principal"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_resumen_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_icono_resumen"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/bg_icono_verde"
+                    android:gravity="center"
+                    android:text="#"
+                    android:textColor="@color/verde_principal"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_titulo_resumen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="Resumen del ganado"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_ver_ganado"
+                    android:layout_width="118dp"
+                    android:layout_height="44dp"
+                    android:backgroundTint="@color/verde_muy_claro"
+                    android:text="Ver"
+                    android:textAllCaps="false"
+                    android:textColor="@color/verde_principal"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <GridLayout
+                android:id="@+id/gl_tarjetas_resumen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:columnCount="2"
+                android:rowCount="2">
+
+                <LinearLayout
+                    android:id="@+id/ll_animales_registrados"
+                    style="@style/CardResumen"
+                    android:background="@drawable/bg_card_verde">
+
+                    <TextView
+                        android:id="@+id/tv_animales_cantidad"
+                        style="@style/NumeroResumen"
+                        android:text="248" />
+
+                    <TextView
+                        android:id="@+id/tv_animales_etiqueta"
+                        style="@style/EtiquetaResumen"
+                        android:text="Animales registrados" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_animales_saludables"
+                    style="@style/CardResumen"
+                    android:background="@drawable/bg_card_verde">
+
+                    <TextView
+                        android:id="@+id/tv_saludables_cantidad"
+                        style="@style/NumeroResumen"
+                        android:text="210" />
+
+                    <TextView
+                        android:id="@+id/tv_saludables_etiqueta"
+                        style="@style/EtiquetaResumen"
+                        android:text="Saludables" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_animales_observacion"
+                    style="@style/CardResumen"
+                    android:background="@drawable/bg_card_amarillo">
+
+                    <TextView
+                        android:id="@+id/tv_observacion_cantidad"
+                        style="@style/NumeroResumenAlerta"
+                        android:text="25" />
+
+                    <TextView
+                        android:id="@+id/tv_observacion_etiqueta"
+                        style="@style/EtiquetaResumen"
+                        android:text="En observacion" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_animales_tratamiento"
+                    style="@style/CardResumen"
+                    android:background="@drawable/bg_card_rojo">
+
+                    <TextView
+                        android:id="@+id/tv_tratamiento_cantidad"
+                        style="@style/NumeroResumenRojo"
+                        android:text="13" />
+
+                    <TextView
+                        android:id="@+id/tv_tratamiento_etiqueta"
+                        style="@style/EtiquetaResumen"
+                        android:text="En tratamiento" />
+                </LinearLayout>
+            </GridLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_alertas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_alerta"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_alertas_titulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_icono_alerta"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:text="!"
+                        android:textColor="@color/rojo_alerta"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_titulo_alertas"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:text="Alertas importantes"
+                        android:textColor="@color/texto_principal"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_ver_alertas"
+                        android:layout_width="100dp"
+                        android:layout_height="42dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:text="Ver todas"
+                        android:textAllCaps="false"
+                        android:textColor="@color/rojo_alerta"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_alerta_animal"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_alerta_item"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <TextView
+                        android:id="@+id/tv_imagen_alerta"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_icono_verde"
+                        android:gravity="center"
+                        android:text="V"
+                        android:textColor="@color/verde_principal"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_texto_alerta"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_alerta_animal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Animal #0187"
+                            android:textColor="@color/texto_principal"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_alerta_descripcion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Requiere revision veterinaria"
+                            android:textColor="@color/texto_secundario"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_alerta_estado"
+                        android:layout_width="78dp"
+                        android:layout_height="34dp"
+                        android:background="@drawable/bg_etiqueta_urgente"
+                        android:gravity="center"
+                        android:text="Urgente"
+                        android:textColor="@color/rojo_alerta"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_titulo_accesos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Accesos rapidos"
+                android:textColor="@color/texto_principal"
+                android:textSize="21sp"
+                android:textStyle="bold" />
+
+            <GridLayout
+                android:id="@+id/gl_accesos_rapidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:columnCount="3">
+
+                <Button
+                    android:id="@+id/btn_ganado"
+                    style="@style/BotonAcceso"
+                    android:text="Ganado" />
+
+                <Button
+                    android:id="@+id/btn_salud"
+                    style="@style/BotonAcceso"
+                    android:text="Salud" />
+
+                <Button
+                    android:id="@+id/btn_alimentacion"
+                    style="@style/BotonAcceso"
+                    android:text="Alimentacion" />
+
+                <Button
+                    android:id="@+id/btn_inventario"
+                    style="@style/BotonAcceso"
+                    android:text="Inventario" />
+
+                <Button
+                    android:id="@+id/btn_compras"
+                    style="@style/BotonAcceso"
+                    android:text="Compras" />
+
+                <Button
+                    android:id="@+id/btn_gastos"
+                    style="@style/BotonAcceso"
+                    android:text="Gastos" />
+
+                <Button
+                    android:id="@+id/btn_trabajadores"
+                    style="@style/BotonAcceso"
+                    android:text="Trabajadores" />
+
+                <Button
+                    android:id="@+id/btn_tareas"
+                    style="@style/BotonAcceso"
+                    android:text="Tareas" />
+
+                <Button
+                    android:id="@+id/btn_reportes"
+                    style="@style/BotonAcceso"
+                    android:text="Reportes" />
+            </GridLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_actividad_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_titulo_actividad"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Actividad reciente"
+                    android:textColor="@color/texto_principal"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_ver_actividad"
+                    android:layout_width="92dp"
+                    android:layout_height="42dp"
+                    android:backgroundTint="@color/verde_muy_claro"
+                    android:text="Ver mas"
+                    android:textAllCaps="false"
+                    android:textColor="@color/verde_principal"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_actividad_reciente"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_actividad"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <TextView
+                    android:id="@+id/tv_icono_actividad"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_icono_verde"
+                    android:gravity="center"
+                    android:text="OK"
+                    android:textColor="@color/verde_principal"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/ll_texto_actividad"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_actividad_resumen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hoy se registraron 12 actividades"
+                        android:textColor="@color/texto_principal"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_actividad_detalle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ultima actividad: Vacunacion"
+                        android:textColor="@color/texto_secundario"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_actividad_tiempo"
+                    android:layout_width="62dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="Hace 1 h"
+                    android:textColor="@color/texto_secundario"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_menu_inferior"
+        android:layout_width="0dp"
+        android:layout_height="86dp"
+        android:background="@drawable/bg_menu_inferior"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btn_inicio"
+            style="@style/BotonMenu"
+            android:text="Inicio"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/btn_menu_ganado"
+            style="@style/BotonMenu"
+            android:text="Ganado"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/btn_menu_inventario"
+            style="@style/BotonMenu"
+            android:text="Inventario"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/btn_menu_actividad"
+            style="@style/BotonMenu"
+            android:text="Actividad"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/btn_menu_mas"
+            style="@style/BotonMenu"
+            android:text="Más"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
