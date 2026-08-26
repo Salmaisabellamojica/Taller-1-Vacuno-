@@ -306,7 +306,7 @@
                         android:layout_width="100dp"
                         android:layout_height="42dp"
                         android:backgroundTint="@android:color/transparent"
-                        android:text="Ver todas"
+                        android:text="Ver "
                         android:textAllCaps="false"
                         android:textColor="@color/rojo_alerta"
                         android:textSize="12sp"
@@ -565,9 +565,10 @@
             android:textSize="10sp" />
 
         <Button
-            android:id="@+id/btn_menu_mas"
+            android:id="@+id/btn_cerrar_sesio"
             style="@style/BotonMenu"
-            android:text="Más"
+            android:text="cerrar sesión"
+            android:textColor="#EF0505"
             android:textSize="10sp" />
     </LinearLayout>
 
