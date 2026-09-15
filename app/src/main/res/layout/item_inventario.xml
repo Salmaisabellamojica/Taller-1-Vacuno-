@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_animal_card" android:gravity="center_vertical" android:orientation="horizontal" android:padding="14dp">
+
+    <TextView android:id="@+id/tv_inventario_inicial" android:layout_width="54dp" android:layout_height="54dp"
+        android:background="@drawable/bg_animal_imagen" android:gravity="center" android:textColor="@color/verde_principal" android:textSize="22sp" android:textStyle="bold" />
+    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="13dp" android:layout_weight="1" android:orientation="vertical">
+        <TextView android:id="@+id/tv_inventario_nombre" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/texto_principal" android:textSize="17sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tv_inventario_categoria" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3dp" android:textColor="@color/texto_secundario" android:textSize="13sp" />
+        <TextView android:id="@+id/tv_inventario_cantidad" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3dp" android:textColor="@color/texto_principal" android:textSize="14sp" android:textStyle="bold" />
+    </LinearLayout>
+    <TextView android:id="@+id/tv_inventario_stock" android:layout_width="wrap_content" android:layout_height="27dp" android:gravity="center" android:paddingStart="9dp" android:paddingEnd="9dp" android:textSize="11sp" android:textStyle="bold" />
+</LinearLayout>
