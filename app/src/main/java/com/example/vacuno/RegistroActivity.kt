@@ -1,6 +1,7 @@
 package com.example.vacuno
 
 import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
@@ -70,17 +71,15 @@ class RegistroActivity : AppCompatActivity() {
                 !cbTerminos.isChecked -> Toast.makeText(this, "Debes aceptar los terminos", Toast.LENGTH_SHORT).show()
                 else -> {
                     val rol = findViewById<RadioButton>(idRolSeleccionado).text.toString()
+                    getSharedPreferences("vacuno_preferences", Context.MODE_PRIVATE)
+                        .edit()
+                        .putString("nombre", nombre)
+                        .putString("correo", correo)
+                        .putString("contrasena", contrasena)
+                        .putString("finca", nombreFinca)
+                        .putBoolean("sesion_activa", false)
+                        .apply()
                     val intentLogin = Intent(this, MainActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("nombre", nombre)
-                    bundle.putString("correo", correo)
-                    bundle.putString("contrasena", contrasena)
-                    bundle.putString("telefono", telefono)
-                    bundle.putString("nombre_finca", nombreFinca)
-
-                    bundle.putString("rol", rol)
-                    bundle.putBoolean("recibe_informacion", switchInformacion.isChecked)
-                    intentLogin.putExtras(bundle)
                     startActivity(intentLogin)
                     finish()
                 }

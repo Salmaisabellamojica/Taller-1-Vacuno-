@@ -1,6 +1,8 @@
 package com.example.vacuno
 
 import android.content.Intent
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -13,10 +15,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var preferences: SharedPreferences
+    private val prefsName = "vacuno_preferences"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        preferences = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -31,16 +37,11 @@ class MainActivity : AppCompatActivity() {
         val regexCorreo = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         val regexContrasena = Regex("^(?=.*[A-Za-z])(?=.*\\d).{6,}$")
 
-        val datosRegistro = intent.extras
-        val correoRegistrado = datosRegistro?.getString("correo")
-        val contrasenaRegistrada = datosRegistro?.getString("contrasena")
-        val nombre = datosRegistro?.getString("nombre")
-        val finca = datosRegistro?.getString("nombre_finca")
-
-        if (!correoRegistrado.isNullOrBlank()) {
-            etCorreo.setText(correoRegistrado)
-            Toast.makeText(this, "Cuenta creada. Ahora inicia sesion.", Toast.LENGTH_SHORT).show()
+        if (preferences.getBoolean("sesion_activa", false)) {
+            abrirPanelAdmin()
+            return
         }
+        etCorreo.setText(preferences.getString("correo", ""))
 
 
         btnIngresar.setOnClickListener {
@@ -52,14 +53,10 @@ class MainActivity : AppCompatActivity() {
                 !regexCorreo.matches(correo) -> Toast.makeText(this, "Ingresa un correo valido", Toast.LENGTH_SHORT).show()
                 contrasena.isEmpty() -> Toast.makeText(this, "Ingresa tu contrasena", Toast.LENGTH_SHORT).show()
                 !regexContrasena.matches(contrasena) -> Toast.makeText(this, "La contrasena debe tener letras, numeros y minimo 6 caracteres", Toast.LENGTH_SHORT).show()
-                correo == correoRegistrado && contrasena == contrasenaRegistrada -> {
-                    val intentAdmin = Intent(this, AdminActivity::class.java).apply {
-                        putExtra("nombre", nombre)
-                        putExtra("nombre_finca", finca)
-                    }
-
-                    startActivity(intentAdmin)
-                    finish()
+                correo == preferences.getString("correo", "") &&
+                    contrasena == preferences.getString("contrasena", "") -> {
+                    preferences.edit().putBoolean("sesion_activa", true).apply()
+                    abrirPanelAdmin()
                 }
                 else -> mostrarAlertaNoRegistrado()
             }
@@ -72,6 +69,11 @@ class MainActivity : AppCompatActivity() {
         tvOlvidasteContrasena.setOnClickListener {
             Toast.makeText(this, "Recuperacion de contrasena pendiente", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun abrirPanelAdmin() {
+        startActivity(Intent(this, AdminActivity::class.java))
+        finish()
     }
 
     private fun mostrarAlertaNoRegistrado() {
