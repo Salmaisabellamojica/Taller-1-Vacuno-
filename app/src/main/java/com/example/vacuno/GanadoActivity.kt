@@ -1,9 +1,12 @@
 package com.example.vacuno
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -14,6 +17,7 @@ import com.example.vacuno.model.Animal
 import com.example.vacuno.model.EstadoSalud
 import com.example.vacuno.model.Sexo
 import com.example.vacuno.util.EdadAnimalCalculator
+import com.example.vacuno.session.SessionPreferences
 import com.google.android.material.button.MaterialButton
 
 class GanadoActivity : AppCompatActivity() {
@@ -37,7 +41,28 @@ class GanadoActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.et_buscar).addTextChangedListener { actualizarLista() }
 
         configurarFiltros()
+        configurarMenuInferior()
         actualizarLista()
+    }
+
+    private fun configurarMenuInferior() {
+        findViewById<Button>(R.id.btn_inicio).setOnClickListener {
+            startActivity(Intent(this, AdminActivity::class.java))
+            finish()
+        }
+        findViewById<Button>(R.id.btn_menu_ganado).setOnClickListener { }
+        findViewById<Button>(R.id.btn_menu_inventario).setOnClickListener {
+            startActivity(Intent(this, InventarioActivity::class.java))
+            finish()
+        }
+        findViewById<Button>(R.id.btn_menu_actividad).setOnClickListener {
+            Toast.makeText(this, "Actividad próximamente", Toast.LENGTH_SHORT).show()
+        }
+        findViewById<Button>(R.id.btn_cerrar_sesio).setOnClickListener {
+            SessionPreferences(this).closeSession()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
     /** Configura cómo se dibuja y recicla la lista de animales. */

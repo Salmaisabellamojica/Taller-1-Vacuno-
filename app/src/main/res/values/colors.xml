@@ -10,4 +10,12 @@
     <color name="gris_hint">#8D968E</color>
     <color name="amarillo_alerta">#C98200</color>
     <color name="rojo_alerta">#B1192B</color>
+    <color name="fondo_premium">#F8F8F3</color>
+    <color name="verde_oscuro">#064622</color>
+    <color name="verde_medio">#13703B</color>
+    <color name="verde_superficie">#EEF7EC</color>
+    <color name="verde_botones">#96AC60</color>
+    <color name="verde_botones_presionado">#86A456</color>
+    <color name="borde_suave">#E1E8DF</color>
+    <color name="texto_terciario">#788178</color>
 </resources>

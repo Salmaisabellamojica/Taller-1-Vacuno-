@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +25,13 @@ class AnimalAdapter : ListAdapter<Animal, AnimalAdapter.AnimalViewHolder>(DIFF_C
         private val estado = itemView.findViewById<TextView>(R.id.tv_estado)
 
         fun bind(animal: Animal) = with(itemView) {
-            findViewById<TextView>(R.id.tv_inicial).text = animal.nombre.first().uppercase()
+            val foto = when (animal.id) {
+                "0248" -> R.drawable.foto_luna
+                "0187" -> R.drawable.foto_mora
+                "0312" -> R.drawable.foto_sol
+                else -> R.drawable.foto_canela
+            }
+            findViewById<ImageView>(R.id.tv_inicial).setImageResource(foto)
             findViewById<TextView>(R.id.tv_id).text = "#${animal.id}"
             findViewById<TextView>(R.id.tv_nombre).text = animal.nombre
             findViewById<TextView>(R.id.tv_detalle).text =

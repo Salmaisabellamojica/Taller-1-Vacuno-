@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FAFCF9">
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/fondo_premium">
 
-    <LinearLayout android:id="@+id/toolbar_inventario" android:layout_width="0dp" android:layout_height="64dp" android:layout_marginStart="16dp" android:layout_marginTop="32dp" android:layout_marginEnd="16dp" android:layout_marginBottom="16dp" android:gravity="center_vertical" android:orientation="horizontal" android:paddingStart="12dp" android:paddingEnd="18dp"
+    <LinearLayout android:id="@+id/toolbar_inventario" android:layout_width="0dp" android:layout_height="92dp" android:layout_marginBottom="10dp" android:background="@drawable/bg_top_bar" android:gravity="center_vertical" android:orientation="horizontal" android:paddingStart="16dp" android:paddingEnd="18dp"
         app:layout_constraintBottom_toTopOf="@+id/et_buscar_inventario" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-        <TextView android:id="@+id/btn_volver_inventario" android:layout_width="44dp" android:layout_height="44dp" android:contentDescription="Volver" android:gravity="center" android:text="‹" android:textColor="@color/texto_principal" android:textSize="40sp" />
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Inventario" android:textColor="@color/texto_principal" android:textSize="23sp" android:textStyle="bold" />
+        <TextView android:id="@+id/btn_volver_inventario" android:layout_width="44dp" android:layout_height="44dp" android:contentDescription="Volver" android:gravity="center" android:text="‹" android:textColor="@color/white" android:textSize="40sp" />
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Inventario" android:textColor="@color/white" android:textSize="20sp" android:textStyle="bold" />
         <View android:layout_width="44dp" android:layout_height="44dp" />
     </LinearLayout>
 
@@ -14,16 +14,62 @@
 
     <HorizontalScrollView android:id="@+id/scroll_filtros_inventario" android:layout_width="0dp" android:layout_height="52dp" android:layout_marginTop="10dp" android:scrollbars="none" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/et_buscar_inventario">
         <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:gravity="center_vertical" android:orientation="horizontal" android:paddingStart="20dp" android:paddingEnd="20dp">
-            <com.google.android.material.button.MaterialButton android:id="@+id/btn_inventario_todos" style="@style/FiltroGanado" android:checked="true" android:text="Todos" />
-            <com.google.android.material.button.MaterialButton android:id="@+id/btn_vacunas" style="@style/FiltroGanado" android:text="Vacunas" />
-            <com.google.android.material.button.MaterialButton android:id="@+id/btn_desparasitantes" style="@style/FiltroGanado" android:text="Desparasitantes" />
-            <com.google.android.material.button.MaterialButton android:id="@+id/btn_sales" style="@style/FiltroGanado" android:text="Sales" />
-            <com.google.android.material.button.MaterialButton android:id="@+id/btn_alimentos" style="@style/FiltroGanado" android:text="Alimentos" />
-            <com.google.android.material.button.MaterialButton android:id="@+id/btn_otros" style="@style/FiltroGanado" android:text="Más" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_inventario_todos"
+                style="@style/FiltroGanado"
+                android:checked="true"
+                android:text="Todos"
+                app:backgroundTint="#96AC60" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_vacunas"
+                style="@style/FiltroGanado"
+                android:text="Vacunas"
+                app:backgroundTint="#96AC60" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_desparasitantes"
+                style="@style/FiltroGanado"
+                android:text="Desparasitantes"
+                app:backgroundTint="#96AC60" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sales"
+                style="@style/FiltroGanado"
+                android:text="Sales"
+                app:backgroundTint="#96AC60" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_alimentos"
+                style="@style/FiltroGanado"
+                android:text="Alimentos"
+                app:backgroundTint="#96AC60" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_otros"
+                style="@style/FiltroGanado"
+                android:text="Más"
+                app:backgroundTint="#96AC60" />
         </LinearLayout>
     </HorizontalScrollView>
 
     <TextView android:id="@+id/tv_inventario_vacio" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No hay productos que coincidan con la búsqueda." android:textColor="@color/texto_secundario" android:textSize="15sp" android:visibility="gone" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/scroll_filtros_inventario" />
 
-    <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_inventario" android:layout_width="0dp" android:layout_height="0dp" android:layout_marginStart="20dp" android:layout_marginTop="24dp" android:layout_marginEnd="20dp" android:clipToPadding="false" android:paddingBottom="86dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/scroll_filtros_inventario" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_inventario" android:layout_width="0dp" android:layout_height="0dp" android:layout_marginStart="20dp" android:layout_marginTop="14dp" android:layout_marginEnd="20dp" android:clipToPadding="false" android:paddingBottom="18dp" app:layout_constraintBottom_toTopOf="@id/ll_menu_inventario" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/scroll_filtros_inventario" />
+
+    <LinearLayout android:id="@+id/ll_menu_inventario" android:layout_width="0dp" android:layout_height="74dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="14dp" android:background="@drawable/bg_bottom_nav_premium" android:gravity="center" android:orientation="horizontal" android:padding="6dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
+        <Button android:id="@+id/btn_inicio" style="@style/BotonMenu" android:text="Inicio" />
+        <Button android:id="@+id/btn_menu_ganado" style="@style/BotonMenu" android:text="Ganado" />
+
+        <Button
+            android:id="@+id/btn_menu_inventario"
+            style="@style/BotonMenu"
+            android:background="@drawable/bg_nav_item_active"
+            android:backgroundTint="#96AC60"
+            android:text="Inventario"
+            android:textColor="@color/verde_principal" />
+        <Button android:id="@+id/btn_menu_actividad" style="@style/BotonMenu" android:text="Actividad" />
+        <Button android:id="@+id/btn_cerrar_sesio" style="@style/BotonMenu" android:text="Salir" android:textColor="@color/rojo_alerta" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

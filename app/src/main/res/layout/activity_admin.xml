@@ -5,32 +5,31 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_pantalla"
+    android:background="@color/fondo_premium"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/ll_header"
         android:layout_width="0dp"
-        android:layout_height="116dp"
-        android:background="@drawable/bg_header"
+        android:layout_height="104dp"
+        android:background="@drawable/bg_top_bar"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="22dp"
+        android:paddingStart="18dp"
         android:paddingEnd="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <ImageView
             android:id="@+id/tv_logo_vacuno"
-            android:layout_width="58dp"
-            android:layout_height="58dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:background="@drawable/bg_icono_claro"
-            android:gravity="center"
-            android:text="V"
-            android:textColor="@color/verde_principal"
-            android:textSize="32sp"
-            android:textStyle="bold" />
+            android:contentDescription="Logo Vacuno"
+            android:padding="1dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/a25de131_14db_4de1_a33b_656148a33694" />
 
         <LinearLayout
             android:id="@+id/ll_titulo_app"
@@ -46,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:text="VACUNO"
                 android:textColor="@color/white"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textSize="21sp"
+                android:textStyle="normal|bold" />
 
             <TextView
                 android:id="@+id/tv_subtitulo"
@@ -55,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text="Gestion ganadera inteligente"
                 android:textColor="@color/blanco_suave"
-                android:textSize="14sp" />
+            android:textSize="11sp" />
         </LinearLayout>
 
         <TextView
@@ -64,10 +63,10 @@
             android:layout_height="44dp"
             android:background="@drawable/bg_icono_header"
             android:gravity="center"
-            android:text="!"
             android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="⚠️" />
 
         <ImageView
             android:id="@+id/img_avatar"
@@ -126,7 +125,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Bienvenido al panel de control de tu finca"
+                    android:text="Bienvenido al panel de control de tu finca "
                     android:textColor="@color/texto_secundario"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -181,10 +180,10 @@
 
                 <Button
                     android:id="@+id/btn_ver_ganado"
-                    android:layout_width="118dp"
+                    android:layout_width="140dp"
                     android:layout_height="44dp"
                     android:backgroundTint="@color/verde_muy_claro"
-                    android:text="Ver"
+                    android:text="Ver ganado  →"
                     android:textAllCaps="false"
                     android:textColor="@color/verde_principal"
                     android:textSize="12sp"
@@ -379,7 +378,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
-                android:text="Accesos rapidos"
+                    android:text="Accesos rápidos"
                 android:textColor="@color/texto_principal"
                 android:textSize="21sp"
                 android:textStyle="bold" />
@@ -394,46 +393,55 @@
                 <Button
                     android:id="@+id/btn_ganado"
                     style="@style/BotonAcceso"
+                    android:backgroundTint="#D9E7B4"
                     android:text="Ganado" />
 
                 <Button
                     android:id="@+id/btn_salud"
                     style="@style/BotonAcceso"
+                    android:backgroundTint="#D9E7B4"
                     android:text="Salud" />
 
                 <Button
                     android:id="@+id/btn_alimentacion"
                     style="@style/BotonAcceso"
+                    android:backgroundTint="#D9E7B4"
                     android:text="Alimentacion" />
 
                 <Button
                     android:id="@+id/btn_inventario"
                     style="@style/BotonAcceso"
+                    android:backgroundTint="#D9E7B4"
                     android:text="Inventario" />
 
                 <Button
                     android:id="@+id/btn_compras"
                     style="@style/BotonAcceso"
+                    android:backgroundTint="#D9E7B4"
                     android:text="Compras" />
 
                 <Button
                     android:id="@+id/btn_gastos"
                     style="@style/BotonAcceso"
+                    android:backgroundTint="#D9E7B4"
                     android:text="Gastos" />
 
                 <Button
                     android:id="@+id/btn_trabajadores"
                     style="@style/BotonAcceso"
+                    android:backgroundTint="#D9E7B4"
                     android:text="Trabajadores" />
 
                 <Button
                     android:id="@+id/btn_tareas"
                     style="@style/BotonAcceso"
+                    android:backgroundTint="#D9E7B4"
                     android:text="Tareas" />
 
                 <Button
                     android:id="@+id/btn_reportes"
                     style="@style/BotonAcceso"
+                    android:backgroundTint="#D9E7B4"
                     android:text="Reportes" />
             </GridLayout>
 
@@ -457,10 +465,10 @@
 
                 <Button
                     android:id="@+id/btn_ver_actividad"
-                    android:layout_width="92dp"
+                    android:layout_width="110dp"
                     android:layout_height="42dp"
                     android:backgroundTint="@color/verde_muy_claro"
-                    android:text="Ver mas"
+                    android:text="Ver más"
                     android:textAllCaps="false"
                     android:textColor="@color/verde_principal"
                     android:textSize="12sp"
@@ -478,16 +486,16 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-                <TextView
-                    android:id="@+id/tv_icono_actividad"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_icono_verde"
-                    android:gravity="center"
-                    android:text="OK"
-                    android:textColor="@color/verde_principal"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/tv_logo_vacuno"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/bg_icono_claro"
+                    android:contentDescription="Logo Vacuno"
+                    android:padding="1dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/logo_vacuno"
+                    tools:srcCompat="@drawable/a25de131_14db_4de1_a33b_656148a33694" />
 
                 <LinearLayout
                     android:id="@+id/ll_texto_actividad"
@@ -508,8 +516,8 @@
 
                     <TextView
                         android:id="@+id/tv_actividad_detalle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
                         android:text="Ultima actividad: Vacunacion"
                         android:textColor="@color/texto_secundario"
                         android:textSize="13sp" />
@@ -530,8 +538,8 @@
     <LinearLayout
         android:id="@+id/ll_menu_inferior"
         android:layout_width="0dp"
-        android:layout_height="86dp"
-        android:background="@drawable/bg_menu_inferior"
+        android:layout_height="82dp"
+        android:background="@drawable/bg_bottom_nav_premium"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingStart="8dp"
@@ -543,8 +551,13 @@
         <Button
             android:id="@+id/btn_inicio"
             style="@style/BotonMenu"
+            android:background="@drawable/bg_nav_item_active"
+            android:backgroundTint="#96AC60"
             android:text="Inicio"
-            android:textSize="10sp" />
+            android:textColor="#FFFFFF"
+            android:textColorLink="#96AC60"
+            android:textSize="10sp"
+            app:secondaryIconTint="#96AC60" />
 
         <Button
             android:id="@+id/btn_menu_ganado"
@@ -556,6 +569,7 @@
             android:id="@+id/btn_menu_inventario"
             style="@style/BotonMenu"
             android:text="Inventario"
+            android:textColorLink="#96AC60"
             android:textSize="10sp" />
 
         <Button

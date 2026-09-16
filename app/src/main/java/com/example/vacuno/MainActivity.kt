@@ -1,9 +1,11 @@
 package com.example.vacuno
 
 import android.content.Intent
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
+import android.widget.ImageView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -13,16 +15,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.vacuno.session.SessionPreferences
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var preferences: SharedPreferences
-    private val prefsName = "vacuno_preferences"
+    private lateinit var sessionPreferences: SessionPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        preferences = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        aplicarDesenfoqueDeFondo()
+        sessionPreferences = SessionPreferences(this)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -37,11 +40,11 @@ class MainActivity : AppCompatActivity() {
         val regexCorreo = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         val regexContrasena = Regex("^(?=.*[A-Za-z])(?=.*\\d).{6,}$")
 
-        if (preferences.getBoolean("sesion_activa", false)) {
+        if (sessionPreferences.isSessionActive()) {
             abrirPanelAdmin()
             return
         }
-        etCorreo.setText(preferences.getString("correo", ""))
+        etCorreo.setText(sessionPreferences.email())
 
 
         btnIngresar.setOnClickListener {
@@ -53,9 +56,8 @@ class MainActivity : AppCompatActivity() {
                 !regexCorreo.matches(correo) -> Toast.makeText(this, "Ingresa un correo valido", Toast.LENGTH_SHORT).show()
                 contrasena.isEmpty() -> Toast.makeText(this, "Ingresa tu contrasena", Toast.LENGTH_SHORT).show()
                 !regexContrasena.matches(contrasena) -> Toast.makeText(this, "La contrasena debe tener letras, numeros y minimo 6 caracteres", Toast.LENGTH_SHORT).show()
-                correo == preferences.getString("correo", "") &&
-                    contrasena == preferences.getString("contrasena", "") -> {
-                    preferences.edit().putBoolean("sesion_activa", true).apply()
+                sessionPreferences.credentialsMatch(correo, contrasena) -> {
+                    sessionPreferences.startSession()
                     abrirPanelAdmin()
                 }
                 else -> mostrarAlertaNoRegistrado()
@@ -68,6 +70,15 @@ class MainActivity : AppCompatActivity() {
 
         tvOlvidasteContrasena.setOnClickListener {
             Toast.makeText(this, "Recuperacion de contrasena pendiente", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /** Desenfoca solo la franja superior para dar contraste al logo y formulario. */
+    private fun aplicarDesenfoqueDeFondo() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            findViewById<ImageView>(R.id.img_fondo_vacas_borroso).setRenderEffect(
+                RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
+            )
         }
     }
 

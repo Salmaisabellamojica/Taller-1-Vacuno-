@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,7 @@ class InventarioAdapter : ListAdapter<Inventario, InventarioAdapter.InventarioVi
 
     class InventarioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: Inventario) = with(itemView) {
-            findViewById<TextView>(R.id.tv_inventario_inicial).text = item.nombre.first().uppercase()
+            findViewById<ImageView>(R.id.tv_inventario_inicial).setImageResource(R.drawable.logo_vacuno)
             findViewById<TextView>(R.id.tv_inventario_nombre).text = item.nombre
             findViewById<TextView>(R.id.tv_inventario_categoria).text = item.categoria.etiqueta
             findViewById<TextView>(R.id.tv_inventario_cantidad).text = "${item.cantidad} ${item.unidad}"
