@@ -4,6 +4,10 @@ import android.content.Intent
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
+import android.widget.ImageView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -22,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        aplicarDesenfoqueDeFondo()
         preferences = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -68,6 +73,15 @@ class MainActivity : AppCompatActivity() {
 
         tvOlvidasteContrasena.setOnClickListener {
             Toast.makeText(this, "Recuperacion de contrasena pendiente", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /** Desenfoca solo la franja superior para dar contraste al logo y formulario. */
+    private fun aplicarDesenfoqueDeFondo() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            findViewById<ImageView>(R.id.img_fondo_vacas_borroso).setRenderEffect(
+                RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
+            )
         }
     }
 

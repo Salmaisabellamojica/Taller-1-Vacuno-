@@ -1,9 +1,12 @@
 package com.example.vacuno
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -36,7 +39,30 @@ class InventarioActivity : AppCompatActivity() {
         setupRecyclerView()
         findViewById<EditText>(R.id.et_buscar_inventario).addTextChangedListener { actualizarLista() }
         configurarFiltros()
+        configurarMenuInferior()
         actualizarLista()
+    }
+
+    private fun configurarMenuInferior() {
+        findViewById<Button>(R.id.btn_inicio).setOnClickListener {
+            startActivity(Intent(this, AdminActivity::class.java))
+            finish()
+        }
+        findViewById<Button>(R.id.btn_menu_ganado).setOnClickListener {
+            startActivity(Intent(this, GanadoActivity::class.java))
+            finish()
+        }
+        findViewById<Button>(R.id.btn_menu_inventario).setOnClickListener { }
+        findViewById<Button>(R.id.btn_menu_actividad).setOnClickListener {
+            Toast.makeText(this, "Actividad próximamente", Toast.LENGTH_SHORT).show()
+        }
+        findViewById<Button>(R.id.btn_cerrar_sesio).setOnClickListener {
+            getSharedPreferences("vacuno_preferences", MODE_PRIVATE).edit()
+                .putBoolean("sesion_activa", false)
+                .apply()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
     private fun configurarFiltros() {
