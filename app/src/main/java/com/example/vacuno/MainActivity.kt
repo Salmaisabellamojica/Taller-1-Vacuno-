@@ -1,6 +1,8 @@
 package com.example.vacuno
 
 import android.content.Intent
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.graphics.RenderEffect
 import android.graphics.Shader
@@ -15,17 +17,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.vacuno.session.SessionPreferences
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var sessionPreferences: SessionPreferences
+    private lateinit var preferences: SharedPreferences
+    private val prefsName = "vacuno_preferences"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         aplicarDesenfoqueDeFondo()
-        sessionPreferences = SessionPreferences(this)
+        preferences = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -40,11 +42,11 @@ class MainActivity : AppCompatActivity() {
         val regexCorreo = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         val regexContrasena = Regex("^(?=.*[A-Za-z])(?=.*\\d).{6,}$")
 
-        if (sessionPreferences.isSessionActive()) {
+        if (preferences.getBoolean("sesion_activa", false)) {
             abrirPanelAdmin()
             return
         }
-        etCorreo.setText(sessionPreferences.email())
+        etCorreo.setText(preferences.getString("correo", ""))
 
 
         btnIngresar.setOnClickListener {
@@ -56,8 +58,9 @@ class MainActivity : AppCompatActivity() {
                 !regexCorreo.matches(correo) -> Toast.makeText(this, "Ingresa un correo valido", Toast.LENGTH_SHORT).show()
                 contrasena.isEmpty() -> Toast.makeText(this, "Ingresa tu contrasena", Toast.LENGTH_SHORT).show()
                 !regexContrasena.matches(contrasena) -> Toast.makeText(this, "La contrasena debe tener letras, numeros y minimo 6 caracteres", Toast.LENGTH_SHORT).show()
-                sessionPreferences.credentialsMatch(correo, contrasena) -> {
-                    sessionPreferences.startSession()
+                correo == preferences.getString("correo", "") &&
+                    contrasena == preferences.getString("contrasena", "") -> {
+                    preferences.edit().putBoolean("sesion_activa", true).apply()
                     abrirPanelAdmin()
                 }
                 else -> mostrarAlertaNoRegistrado()

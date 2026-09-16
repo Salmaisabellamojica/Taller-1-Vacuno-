@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.vacuno.adapter.InventarioAdapter
 import com.example.vacuno.model.CategoriaInventario
 import com.example.vacuno.model.Inventario
-import com.example.vacuno.session.SessionPreferences
 import com.google.android.material.button.MaterialButton
 
 class InventarioActivity : AppCompatActivity() {
@@ -58,7 +57,9 @@ class InventarioActivity : AppCompatActivity() {
             Toast.makeText(this, "Actividad próximamente", Toast.LENGTH_SHORT).show()
         }
         findViewById<Button>(R.id.btn_cerrar_sesio).setOnClickListener {
-            SessionPreferences(this).closeSession()
+            getSharedPreferences("vacuno_preferences", MODE_PRIVATE).edit()
+                .putBoolean("sesion_activa", false)
+                .apply()
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
