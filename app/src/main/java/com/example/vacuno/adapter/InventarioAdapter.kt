@@ -21,7 +21,15 @@ class InventarioAdapter : ListAdapter<Inventario, InventarioAdapter.InventarioVi
 
     class InventarioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: Inventario) = with(itemView) {
-            findViewById<ImageView>(R.id.tv_inventario_inicial).setImageResource(R.drawable.logo_vacuno)
+            val imagenProducto = when (item.id) {
+                "INV-01" -> R.drawable.inventario_vacuna_aftosa
+                "INV-02" -> R.drawable.inventario_sal_mineralizada
+                "INV-03" -> R.drawable.inventario_ivermectina
+                "INV-04" -> R.drawable.inventario_melaza
+                "INV-05" -> R.drawable.inventario_jeringas
+                else -> R.drawable.inventario_desinfectante
+            }
+            findViewById<ImageView>(R.id.tv_inventario_inicial).setImageResource(imagenProducto)
             findViewById<TextView>(R.id.tv_inventario_nombre).text = item.nombre
             findViewById<TextView>(R.id.tv_inventario_categoria).text = item.categoria.etiqueta
             findViewById<TextView>(R.id.tv_inventario_cantidad).text = "${item.cantidad} ${item.unidad}"

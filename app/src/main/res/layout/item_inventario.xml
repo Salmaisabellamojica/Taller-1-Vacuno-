@@ -7,7 +7,10 @@
         android:id="@+id/tv_inventario_inicial"
         android:layout_width="54dp"
         android:layout_height="54dp"
-        android:background="@drawable/bg_animal_imagen" />
+        android:background="@drawable/bg_animal_imagen"
+        android:clipToOutline="true"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop" />
     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="13dp" android:layout_weight="1" android:orientation="vertical">
         <TextView android:id="@+id/tv_inventario_nombre" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/texto_principal" android:textSize="17sp" android:textStyle="bold" />
         <TextView android:id="@+id/tv_inventario_categoria" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3dp" android:textColor="@color/texto_secundario" android:textSize="13sp" />

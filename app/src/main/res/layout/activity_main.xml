@@ -150,40 +150,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:background="#EDEAEA"
-                android:backgroundTint="#00FFFFFF"
+                android:background="#FFFFFF"
+                android:backgroundTint="#59EFEDE4"
                 android:text="¿Olvidaste tu contraseña?"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
+                android:textColor="#000000"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/ll_crear_cuenta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_no_cuenta"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#FAFAFA"
+                    android:layout_height="match_parent"
+                    android:background="#59EFEDE4"
                     android:text="¿Aún no tienes una cuenta?"
-                    android:textColor="@color/texto_secundario"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_crear_cuenta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:background="#FFFFFF"
-                    android:text="Crear cuenta"
-                    android:textColor="@color/verde_principal"
-                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
             <ImageView
@@ -194,6 +185,17 @@
                 android:contentDescription="Vacas comiendo pasto en una finca"
                 android:scaleType="centerCrop"
                 android:src="@drawable/vacas_pasto" />
+
+            <TextView
+                android:id="@+id/tv_crear_cuenta"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="#59EFEDE4"
+                android:text="Crear cuenta"
+                android:textColor="@color/verde_oscuro"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 

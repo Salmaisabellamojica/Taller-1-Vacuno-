@@ -1,26 +1,20 @@
 package com.example.vacuno
 
-import com.example.vacuno.model.DireccionResultado
-import com.example.vacuno.network.NominatimService
-
-import android.content.Intent
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
-import android.view.ViewGroup
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Switch
 import android.widget.TextView
@@ -29,30 +23,29 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.vacuno.model.DireccionResultado
+import com.example.vacuno.registro.RegistroValidator
+import com.example.vacuno.registro.map.DireccionMapController
+import com.example.vacuno.session.SessionPreferences
 import org.osmdroid.config.Configuration
-import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
 import java.io.File
-
 
 class RegistroActivity : AppCompatActivity() {
     private val handlerBusqueda = Handler(Looper.getMainLooper())
-    private var direccionSeleccionada: DireccionResultado? = null
-    private var completandoDireccion = false
+    private lateinit var direccionMapController: DireccionMapController
+    private var direccionPendiente: DireccionResultado? = null
+    private var direccionGuardada: DireccionResultado? = null
+    private var actualizandoTextoDireccion = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Configuration.getInstance().userAgentValue =
-            "VacunoApp/1.0 (gestion finca ganadera; contacto soporte@vacunoapp.com)"
-        Configuration.getInstance().osmdroidBasePath = File(applicationContext.cacheDir, "osmdroid")
-        Configuration.getInstance().osmdroidTileCache =
-            File(Configuration.getInstance().osmdroidBasePath, "tiles")
+        configurarOsmdroid()
         enableEdgeToEdge()
         setContentView(R.layout.activity_registro)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { vista, insets ->
+            val barras = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            vista.setPadding(barras.left, barras.top, barras.right, barras.bottom)
             insets
         }
 
@@ -62,208 +55,171 @@ class RegistroActivity : AppCompatActivity() {
         val etContrasena = findViewById<EditText>(R.id.et_contrasena_registro)
         val etNombreFinca = findViewById<EditText>(R.id.et_nombre_finca)
         val etDireccion = findViewById<EditText>(R.id.et_direccion)
-        val mapaDirecciones = findViewById<MapView>(R.id.mapa_direcciones)
-        val lvDirecciones = findViewById<ListView>(R.id.lv_direcciones)
+        val mapa = findViewById<MapView>(R.id.mapa_direcciones)
+        val listaDirecciones = findViewById<ListView>(R.id.lv_direcciones)
+        val tvUbicacion = findViewById<TextView>(R.id.tv_ubicacion_seleccionada)
         val rgRol = findViewById<RadioGroup>(R.id.rg_rol)
-        val switchInformacion = findViewById<Switch>(R.id.switch_informacion)
         val cbTerminos = findViewById<CheckBox>(R.id.cb_terminos)
         val btnRegistrar = findViewById<Button>(R.id.btn_registrar)
-        val tvVolverLogin = findViewById<TextView>(R.id.tv_volver_login)
-        //regex
-        val regexNombre = Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{3,50}$")
-        val regexCorreo = Regex("^[A-Za-z0-9+_.-]+@gmail\\.com\$")
-        val regexTelefono = Regex("^[0-9]{7,10}$")
-        val regexContrasena = Regex("^(?=.*[A-Za-z])(?=.*\\d).{6,}$")
-        val regexTextoFinca = Regex("^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ #.,-]{3,60}$")
+        val btnGuardarUbicacion = findViewById<Button>(R.id.btn_guardar_ubicacion)
+        val btnLimpiarUbicacion = findViewById<Button>(R.id.btn_limpiar_ubicacion)
 
-        mapaDirecciones.setMultiTouchControls(false)
-        mapaDirecciones.setTilesScaledToDpi(true)
-        mapaDirecciones.minZoomLevel = 3.0
-        mapaDirecciones.maxZoomLevel = 19.0
-        mapaDirecciones.setOnTouchListener { v, event ->
-            when (event.actionMasked) {
-                MotionEvent.ACTION_DOWN -> v.parent.requestDisallowInterceptTouchEvent(true)
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->
-                    v.parent.requestDisallowInterceptTouchEvent(false)
+        direccionMapController = DireccionMapController(
+            activity = this,
+            mapa = mapa,
+            listaDirecciones = listaDirecciones,
+            onUbicacionActualizada = { ubicacion ->
+                direccionPendiente = ubicacion
+                tvUbicacion.text = formatoUbicacion(ubicacion)
+                tvUbicacion.visibility = View.VISIBLE
+                actualizandoTextoDireccion = true
+                etDireccion.setText(ubicacion.displayName)
+                etDireccion.setSelection(etDireccion.text.length)
+                actualizandoTextoDireccion = false
             }
-            false
-        }
+        )
+        configurarMapaDesplazable(mapa)
+        configurarBusqueda(etDireccion, listaDirecciones, tvUbicacion)
 
-        etDireccion.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                if (completandoDireccion) return
-                direccionSeleccionada = null
-                val query = s.toString().trim()
-                if (query.length < 3) {
-                    lvDirecciones.visibility = View.GONE
-                    lvDirecciones.adapter = null
-                    mapaDirecciones.overlays.clear()
-                    mapaDirecciones.visibility = View.GONE
-                    return
-                }
-                handlerBusqueda.removeCallbacksAndMessages(null)
-                handlerBusqueda.postDelayed({ buscarDireccion(query) }, 500)
-            }
-        })
-
-        etDireccion.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val query = etDireccion.text.toString().trim()
-                if (query.length >= 3) {
-                    handlerBusqueda.removeCallbacksAndMessages(null)
-                    buscarDireccion(query)
-                }
-                true
+        btnGuardarUbicacion.setOnClickListener {
+            val ubicacion = direccionPendiente
+            if (ubicacion == null) {
+                Toast.makeText(this, "Busca una dirección o mantén pulsado el mapa para marcar un punto", Toast.LENGTH_SHORT).show()
             } else {
-                false
+                direccionGuardada = ubicacion
+                Toast.makeText(this, "Ubicación guardada", Toast.LENGTH_SHORT).show()
             }
         }
 
-        lvDirecciones.setOnItemClickListener { _, _, position, _ ->
-            val adapter = lvDirecciones.adapter
-            val item = adapter.getItem(position) as DireccionResultado
-            completandoDireccion = true
-            etDireccion.setText(item.displayName)
-            etDireccion.setSelection(etDireccion.text.length)
-            completandoDireccion = false
-            direccionSeleccionada = item
-            lvDirecciones.visibility = View.GONE
-            lvDirecciones.adapter = null
-            centrarMapaEn(item)
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(etDireccion.windowToken, 0)
+        btnLimpiarUbicacion.setOnClickListener {
+            handlerBusqueda.removeCallbacksAndMessages(null)
+            actualizandoTextoDireccion = true
+            etDireccion.text.clear()
+            actualizandoTextoDireccion = false
+            direccionPendiente = null
+            direccionGuardada = null
+            tvUbicacion.visibility = View.GONE
+            direccionMapController.limpiar()
         }
-
 
         btnRegistrar.setOnClickListener {
-            val nombre = etNombre.text.toString().trim()
-            val correo = etCorreo.text.toString().trim()
-            val telefono = etTelefono.text.toString().trim()
-            val contrasena = etContrasena.text.toString().trim()
-            val nombreFinca = etNombreFinca.text.toString().trim()
-
-            val idRolSeleccionado = rgRol.checkedRadioButtonId
-
-            //Validaciones
+            val mensaje = RegistroValidator.validate(
+                etNombre.text.toString().trim(),
+                etCorreo.text.toString().trim(),
+                etTelefono.text.toString().trim(),
+                etContrasena.text.toString().trim(),
+                etNombreFinca.text.toString().trim()
+            )
             when {
-                nombre.isEmpty() -> Toast.makeText(this, "Ingresa tu nombre completo", Toast.LENGTH_SHORT).show()
-                !regexNombre.matches(nombre) -> Toast.makeText(this, "El nombre solo debe tener letras y minimo 3 caracteres", Toast.LENGTH_SHORT).show()
-                correo.isEmpty() -> Toast.makeText(this, "Ingresa tu correo electronico", Toast.LENGTH_SHORT).show()
-                !regexCorreo.matches(correo) -> Toast.makeText(this, "Ingresa un correo valido", Toast.LENGTH_SHORT).show()
-                telefono.isEmpty() -> Toast.makeText(this, "Ingresa tu telefono", Toast.LENGTH_SHORT).show()
-                !regexTelefono.matches(telefono) -> Toast.makeText(this, "El telefono debe tener entre 7 y 10 numeros", Toast.LENGTH_SHORT).show()
-                contrasena.isEmpty() -> Toast.makeText(this, "Ingresa una contrasena", Toast.LENGTH_SHORT).show()
-                !regexContrasena.matches(contrasena) -> Toast.makeText(this, "La contrasena debe tener minimo 6 caracteres, letras y numeros", Toast.LENGTH_SHORT).show()
-                nombreFinca.isEmpty() -> Toast.makeText(this, "Ingresa el nombre de la finca", Toast.LENGTH_SHORT).show()
-                !regexTextoFinca.matches(nombreFinca) -> Toast.makeText(this, "Ingresa un nombre de finca valido", Toast.LENGTH_SHORT).show()
-                idRolSeleccionado == -1 -> Toast.makeText(this, "Selecciona tu rol en la finca", Toast.LENGTH_SHORT).show()
-                !cbTerminos.isChecked -> Toast.makeText(this, "Debes aceptar los terminos", Toast.LENGTH_SHORT).show()
-                direccionSeleccionada == null -> Toast.makeText(this, "Busca y selecciona la direccion de la finca", Toast.LENGTH_SHORT).show()
+                mensaje != null -> toast(mensaje)
+                rgRol.checkedRadioButtonId == -1 -> toast("Selecciona tu rol en la finca")
+                !cbTerminos.isChecked -> toast("Debes aceptar los términos")
+                direccionGuardada == null -> toast("Selecciona y guarda la ubicación de la finca")
                 else -> {
-                    val rol = findViewById<RadioButton>(idRolSeleccionado).text.toString()
-                    getSharedPreferences("vacuno_preferences", Context.MODE_PRIVATE)
-                        .edit()
-                        .putString("nombre", nombre)
-                        .putString("correo", correo)
-                        .putString("contrasena", contrasena)
-                        .putString("finca", nombreFinca)
-                        .putString("direccion", direccionSeleccionada?.displayName ?: "")
-                        .putString("direccion_lat", direccionSeleccionada?.lat ?: "")
-                        .putString("direccion_lon", direccionSeleccionada?.lon ?: "")
-                        .putBoolean("sesion_activa", false)
-                        .apply()
-                    val intentLogin = Intent(this, MainActivity::class.java)
-                    startActivity(intentLogin)
+                    SessionPreferences(this).saveAccount(
+                        etNombre.text.toString().trim(),
+                        etCorreo.text.toString().trim(),
+                        etContrasena.text.toString().trim(),
+                        etNombreFinca.text.toString().trim(),
+                        direccionGuardada!!
+                    )
+                    startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
             }
         }
 
-        tvVolverLogin.setOnClickListener {
-            finish()
-        }
+        findViewById<TextView>(R.id.tv_volver_login).setOnClickListener { finish() }
     }
 
-    private fun buscarDireccion(query: String) {
-        Thread {
-            var resultados = listOf<DireccionResultado>()
-            try {
-                resultados = NominatimService.buscarDireccion(query)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            runOnUiThread {
-                val lv = findViewById<ListView>(R.id.lv_direcciones)
-                if (resultados.isEmpty()) {
-                    lv.visibility = View.GONE
-                    lv.adapter = null
-                    findViewById<MapView>(R.id.mapa_direcciones).also { mapa ->
-                        mapa.overlays.clear()
-                        mapa.visibility = View.GONE
-                    }
-                } else {
-                    lv.adapter = object : ArrayAdapter<DireccionResultado>(
-                        this, android.R.layout.simple_list_item_1, resultados
-                    ) {
-                        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                            val v = super.getView(position, convertView, parent)
-                            v.findViewById<TextView>(android.R.id.text1).text = getItem(position)?.displayName
-                            return v
-                        }
-                    }
-                    lv.visibility = View.VISIBLE
-                    mostrarResultadosEnMapa(resultados)
+    private fun configurarBusqueda(
+        etDireccion: EditText,
+        listaDirecciones: ListView,
+        tvUbicacion: TextView
+    ) {
+        etDireccion.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+            override fun afterTextChanged(s: Editable?) {
+                if (actualizandoTextoDireccion) return
+                direccionPendiente = null
+                direccionGuardada = null
+                tvUbicacion.visibility = View.GONE
+                val consulta = s?.toString()?.trim().orEmpty()
+                if (consulta.length < 5) {
+                    handlerBusqueda.removeCallbacksAndMessages(null)
+                    direccionMapController.limpiar()
+                    return
                 }
+                handlerBusqueda.removeCallbacksAndMessages(null)
+                handlerBusqueda.postDelayed({ direccionMapController.buscarDireccion(consulta) }, 1_300)
             }
-        }.start()
+        })
+
+        etDireccion.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId != EditorInfo.IME_ACTION_SEARCH) return@setOnEditorActionListener false
+            val consulta = etDireccion.text.toString().trim()
+            if (consulta.length >= 5) {
+                handlerBusqueda.removeCallbacksAndMessages(null)
+                direccionMapController.buscarDireccion(consulta)
+            }
+            true
+        }
+
+        listaDirecciones.setOnItemClickListener { _, _, posicion, _ ->
+            val direccion = listaDirecciones.adapter.getItem(posicion) as DireccionResultado
+            actualizandoTextoDireccion = true
+            etDireccion.setText(direccion.displayName)
+            etDireccion.setSelection(etDireccion.text.length)
+            actualizandoTextoDireccion = false
+            listaDirecciones.visibility = View.GONE
+            direccionMapController.seleccionarSugerencia(direccion)
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(etDireccion.windowToken, 0)
+        }
     }
 
-    private fun mostrarResultadosEnMapa(resultados: List<DireccionResultado>) {
-        val mapa = findViewById<MapView>(R.id.mapa_direcciones)
-        mapa.overlays.clear()
-        val primero = resultados.first()
-        val centroInicial = GeoPoint(primero.lat.toDouble(), primero.lon.toDouble())
-        mapa.controller.setZoom(15.0)
-        mapa.controller.setCenter(centroInicial)
-        resultados.forEach { d ->
-            val marcador = Marker(mapa)
-            marcador.position = GeoPoint(d.lat.toDouble(), d.lon.toDouble())
-            marcador.title = d.displayName
-            mapa.overlays.add(marcador)
+    private fun configurarMapaDesplazable(mapa: MapView) {
+        mapa.setTilesScaledToDpi(true)
+        mapa.minZoomLevel = 3.0
+        mapa.maxZoomLevel = 19.0
+        mapa.setOnTouchListener { vista, evento ->
+            when (evento.actionMasked) {
+                MotionEvent.ACTION_DOWN -> vista.parent.requestDisallowInterceptTouchEvent(true)
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> vista.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            false
         }
-        mapa.visibility = View.VISIBLE
     }
 
-    private fun centrarMapaEn(d: DireccionResultado) {
-        val mapa = findViewById<MapView>(R.id.mapa_direcciones)
-        if (mapa.visibility != View.VISIBLE) {
-            mostrarResultadosEnMapa(listOf(d))
-            return
-        }
-        mapa.overlays.clear()
-        val marcador = Marker(mapa)
-        marcador.position = GeoPoint(d.lat.toDouble(), d.lon.toDouble())
-        marcador.title = d.displayName
-        mapa.overlays.add(marcador)
-        mapa.controller.setZoom(15.0)
-        mapa.controller.setCenter(GeoPoint(d.lat.toDouble(), d.lon.toDouble()))
+    private fun formatoUbicacion(ubicacion: DireccionResultado): String = buildString {
+        append("Dirección seleccionada:\n")
+        append(ubicacion.displayName)
+        append("\n\nLatitud: ${ubicacion.lat}\nLongitud: ${ubicacion.lon}")
     }
+
+    private fun configurarOsmdroid() {
+        Configuration.getInstance().userAgentValue = "VacunoApp/1.0 (soporte@vacunoapp.local)"
+        Configuration.getInstance().osmdroidBasePath = File(applicationContext.cacheDir, "osmdroid")
+        Configuration.getInstance().osmdroidTileCache = File(Configuration.getInstance().osmdroidBasePath, "tiles")
+    }
+
+    private fun toast(mensaje: String) = Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
 
     override fun onResume() {
         super.onResume()
-        findViewById<MapView>(R.id.mapa_direcciones)?.onResume()
+        direccionMapController.onResume()
     }
 
     override fun onPause() {
+        direccionMapController.onPause()
         super.onPause()
-        findViewById<MapView>(R.id.mapa_direcciones)?.onPause()
     }
 
     override fun onDestroy() {
+        handlerBusqueda.removeCallbacksAndMessages(null)
+        direccionMapController.onDestroy()
         super.onDestroy()
-        findViewById<MapView>(R.id.mapa_direcciones)?.onDetach()
     }
 }

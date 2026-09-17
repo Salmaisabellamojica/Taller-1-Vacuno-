@@ -151,6 +151,17 @@
                 android:outlineProvider="background"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/tv_ubicacion_seleccionada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_lista_direcciones"
+                android:padding="12dp"
+                android:textColor="@color/texto_secundario"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
             <ListView
                 android:id="@+id/lv_direcciones"
                 android:layout_width="match_parent"
@@ -162,6 +173,35 @@
                 android:dividerHeight="1dp"
                 android:paddingVertical="6dp"
                 android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_guardar_ubicacion"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_primary_button"
+                    android:text="Guardar ubicación"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_limpiar_ubicacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/bg_filtro"
+                    android:text="Limpiar"
+                    android:textAllCaps="false"
+                    android:textColor="@color/verde_principal"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_rol"

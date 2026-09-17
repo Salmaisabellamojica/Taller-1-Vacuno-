@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
+import android.view.View
 import android.widget.ImageView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -28,9 +30,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         aplicarDesenfoqueDeFondo()
         preferences = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        val scrollLogin = findViewById<ScrollView>(R.id.scroll_inicio_sesion)
+        var campoActivo: View? = null
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val teclado = insets.getInsets(WindowInsetsCompat.Type.ime())
+            scrollLogin.setPadding(0, 0, 0, (teclado.bottom - systemBars.bottom).coerceAtLeast(0))
+            if (insets.isVisible(WindowInsetsCompat.Type.ime())) {
+                campoActivo?.let { campo -> moverCampoSobreTeclado(scrollLogin, campo) }
+            }
             insets
         }
 
@@ -41,6 +50,15 @@ class MainActivity : AppCompatActivity() {
         val tvOlvidasteContrasena = findViewById<TextView>(R.id.tv_olvidaste_contrasena)
         val regexCorreo = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         val regexContrasena = Regex("^(?=.*[A-Za-z])(?=.*\\d).{6,}$")
+
+        listOf(etCorreo, etContrasena).forEach { campo ->
+            campo.setOnFocusChangeListener { vista, tieneFoco ->
+                if (tieneFoco) {
+                    campoActivo = vista
+                    moverCampoSobreTeclado(scrollLogin, vista)
+                }
+            }
+        }
 
         if (preferences.getBoolean("sesion_activa", false)) {
             abrirPanelAdmin()
@@ -82,6 +100,14 @@ class MainActivity : AppCompatActivity() {
             findViewById<ImageView>(R.id.img_fondo_vacas_borroso).setRenderEffect(
                 RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
             )
+        }
+    }
+
+    /** Mantiene el campo activo visible cuando el teclado reduce la pantalla. */
+    private fun moverCampoSobreTeclado(scrollLogin: ScrollView, campo: View) {
+        scrollLogin.post {
+            val margenSuperior = (24 * resources.displayMetrics.density).toInt()
+            scrollLogin.smoothScrollTo(0, (campo.top - margenSuperior).coerceAtLeast(0))
         }
     }
 

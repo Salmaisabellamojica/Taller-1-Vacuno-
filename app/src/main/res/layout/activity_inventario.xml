@@ -3,11 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/fondo_premium">
 
-    <LinearLayout android:id="@+id/toolbar_inventario" android:layout_width="0dp" android:layout_height="92dp" android:layout_marginBottom="10dp" android:background="@drawable/bg_top_bar" android:gravity="center_vertical" android:orientation="horizontal" android:paddingStart="16dp" android:paddingEnd="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/et_buscar_inventario" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-        <TextView android:id="@+id/btn_volver_inventario" android:layout_width="44dp" android:layout_height="44dp" android:contentDescription="Volver" android:gravity="center" android:text="‹" android:textColor="@color/white" android:textSize="40sp" />
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Inventario" android:textColor="@color/white" android:textSize="20sp" android:textStyle="bold" />
-        <View android:layout_width="44dp" android:layout_height="44dp" />
+    <LinearLayout
+        android:id="@+id/toolbar_inventario"
+        android:layout_width="0dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_top_bar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/et_buscar_inventario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/btn_volver_inventario"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:contentDescription="Volver"
+            android:gravity="center"
+            android:text="‹"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Inventario"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="44dp"
+            android:layout_height="44dp" />
     </LinearLayout>
 
     <EditText android:id="@+id/et_buscar_inventario" android:layout_width="0dp" android:layout_height="48dp" android:layout_marginStart="20dp" android:layout_marginTop="8dp" android:layout_marginEnd="20dp" android:background="@drawable/bg_campo_texto" android:hint="Buscar producto o categoría" android:inputType="text" android:maxLines="1" android:paddingStart="16dp" android:paddingEnd="16dp" android:textColor="@color/texto_principal" android:textColorHint="@color/gris_hint" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/toolbar_inventario" />
@@ -20,37 +54,37 @@
                 style="@style/FiltroGanado"
                 android:checked="true"
                 android:text="Todos"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_vacunas"
                 style="@style/FiltroGanado"
                 android:text="Vacunas"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_desparasitantes"
                 style="@style/FiltroGanado"
                 android:text="Desparasitantes"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sales"
                 style="@style/FiltroGanado"
                 android:text="Sales"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_alimentos"
                 style="@style/FiltroGanado"
                 android:text="Alimentos"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_otros"
                 style="@style/FiltroGanado"
                 android:text="Más"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
         </LinearLayout>
     </HorizontalScrollView>
 

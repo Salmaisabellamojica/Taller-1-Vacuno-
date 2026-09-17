@@ -7,6 +7,7 @@
         android:id="@+id/toolbar_ganado"
         android:layout_width="0dp"
         android:layout_height="92dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/bg_top_bar"
         android:gravity="center_vertical"
@@ -55,27 +56,28 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_todos"
                 style="@style/FiltroGanado"
+                android:background="#D9E7B4"
                 android:checked="true"
                 android:text="Todos"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_hembras"
                 style="@style/FiltroGanado"
                 android:text="Hembras"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_machos"
                 style="@style/FiltroGanado"
                 android:text="Machos"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_jovenes"
                 style="@style/FiltroGanado"
                 android:text="Jóvenes"
-                app:backgroundTint="#96AC60" />
+                app:backgroundTint="#D9E7B4" />
         </LinearLayout>
     </HorizontalScrollView>
 
